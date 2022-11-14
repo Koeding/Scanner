@@ -108,20 +108,6 @@ pub struct ResultAddressInternal {
     pub is_error: String,
     pub err_code: String,
 }
-// Non filtered impl
-impl Api {
-    pub fn get_txs(query: &Query) -> Result<RootAddressTokenRange, Box<dyn Error>> {
-        let url = format!(
-            "https://api.etherscan.io/api?module=account&action=tokentx&contractaddress={}&address={}&page=1&offset=1000&startblock={}&endblock={}&sort=asc&apikey=8CSUXGCYX5P4JTIGP84VAW2H89APQYA3E8",
-            query.token_address, query.address_from, query.start_block, query.end_block
-        )
-        .to_string();
-        println!("Making api call:{:?}", url);
-        let api_call = blocking::get(url)?.text().unwrap();
-        let api_call_to_json = serde_json::from_str::<RootAddressTokenRange>(&api_call).unwrap();
-        Ok(api_call_to_json)
-    }
-}
 
 // Filtered by value threshhold
 impl Api {
@@ -170,11 +156,11 @@ impl Api {
             let api = format!(
                 "https://api.etherscan.io/apt?module=account&action=txlist&address={}&startblock={}&endblock={}&page=t&offset=10000t&sort=ast&apikey=8CSUXGCYX5P4JTIGP84VAW2H89APQYA3E8",
                 query.address_from, query.start_block, query.end_block).to_string();
-            println!("Making api call:{:?}", api);
+            println!("Making api call:{:#?}", api);
             let gen_api_call = blocking::get(api)?.text().unwrap();
             let gen_api_call_to_json =
                 serde_json::from_str::<RootAddressRange>(&gen_api_call).unwrap();
-            println!("Results:{:?}", gen_api_call_to_json);
+            println!("Results:{:#?}", gen_api_call_to_json);
         } else if query.address_from.is_empty() {
             if !query.start_block.is_empty() && !query.end_block.is_empty() {
                 // Search by Block Range
@@ -183,7 +169,7 @@ impl Api {
                 let gen_api_call = blocking::get(api)?.text().unwrap();
                 let gen_api_call_to_json =
                     serde_json::from_str::<RootAddressInternal>(&gen_api_call).unwrap();
-                println!("Results:{:?}", gen_api_call_to_json);
+                println!("Results:{:#?}", gen_api_call_to_json);
             }
         }
 

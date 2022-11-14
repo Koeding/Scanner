@@ -137,6 +137,29 @@ impl Api {
             && !query.start_block.is_empty()
             && !query.end_block.is_empty()
             && !query.token_address.is_empty()
+            && !query.value_threshhold.is_empty()
+        {
+            // Search by Account & Token in Block Range
+            let api = format!(
+                    "https://api.etherscan.io/api?module=account&action=tokentx&contractaddress={}&address={}&page=1&offset=10000&startblock={}&endblock={}&sort=asc&apikey=8CSUXGCYX5P4JTIGP84VAW2H89APQYA3E8",
+                    query.token_address, query.address_from, query.start_block, query.end_block).to_string();
+            println!("Making api call:{:?}", api);
+            let gen_api_call = blocking::get(api)?.text().unwrap();
+            let gen_api_call_to_json =
+                serde_json::from_str::<RootAddressTokenRange>(&gen_api_call).unwrap();
+            let mut filtered_query: Vec<ResponseAddressTokenRange> = vec![];
+            let threshhold: u64 = 1000000 * query.value_threshhold.parse::<u64>().unwrap();
+            let n_elements = gen_api_call_to_json.result.len();
+            for i in 1..n_elements {
+                if gen_api_call_to_json.result[i].value.parse::<u64>().unwrap() >= threshhold {
+                    filtered_query.push(gen_api_call_to_json.result[i].clone());
+                }
+            }
+            println!("Results:{:?}", gen_api_call_to_json);
+        } else if !query.address_from.is_empty()
+            && !query.start_block.is_empty()
+            && !query.end_block.is_empty()
+            && !query.token_address.is_empty()
         {
             // Search by Account & Token in Block Range
             let api = format!(

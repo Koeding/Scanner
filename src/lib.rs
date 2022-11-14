@@ -155,7 +155,7 @@ impl Api {
                     filtered_query.push(gen_api_call_to_json.result[i].clone());
                 }
             }
-            println!("Results:{:?}", gen_api_call_to_json);
+            println!("Results:{:#?}", gen_api_call_to_json);
         } else if !query.address_from.is_empty()
             && !query.start_block.is_empty()
             && !query.end_block.is_empty()

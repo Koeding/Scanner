@@ -4,7 +4,6 @@ use reqwest::blocking;
 use serde::{Deserialize, Serialize};
 use std::error::Error;
 
-// const THRESHOLD: String = "0".to_string();
 pub struct Query {
     pub address_from: String,
     pub token_address: String,
@@ -108,28 +107,7 @@ pub struct ResultAddressInternal {
     pub is_error: String,
     pub err_code: String,
 }
-
-// Filtered by value threshhold
-impl Api {
-    pub fn get_filtered_txs(
-        query: &Query,
-        responses: &RootAddressTokenRange,
-    ) -> Result<Vec<ResponseAddressTokenRange>, &'static str> {
-        let mut filtered_query: Vec<ResponseAddressTokenRange> = vec![];
-        let conversion: u64 = 1000000;
-        let threshhold_value: u64 = conversion * query.value_threshhold.parse::<u64>().unwrap();
-        let n_elements = responses.result.len();
-        for i in 1..n_elements {
-            if responses.result[i].value.parse::<u64>().unwrap() >= threshhold_value {
-                filtered_query.push(responses.result[i].clone());
-            }
-        }
-
-        println!("filtered {:#?} @ {:#?}", filtered_query, threshhold_value);
-        Ok(filtered_query)
-    }
-}
-
+//TODO: use u128 to stop overflow of large value searches
 //write function to determine search
 impl Api {
     pub fn generate_api(query: Query) -> Result<(), Box<dyn Error>> {
@@ -139,7 +117,7 @@ impl Api {
             && !query.token_address.is_empty()
             && !query.value_threshhold.is_empty()
         {
-            // Search by Account & Token in Block Range
+            // Search by Account & Token in Block Range with Value Threshhold
             let api = format!(
                     "https://api.etherscan.io/api?module=account&action=tokentx&contractaddress={}&address={}&page=1&offset=10000&startblock={}&endblock={}&sort=asc&apikey=8CSUXGCYX5P4JTIGP84VAW2H89APQYA3E8",
                     query.token_address, query.address_from, query.start_block, query.end_block).to_string();

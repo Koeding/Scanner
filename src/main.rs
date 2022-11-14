@@ -4,8 +4,6 @@ extern crate reqwest;
 use clap::{App, Arg};
 use etherscanner::{Api, Query};
 
-const THRESHOLD: u64 = 0;
-
 fn main() {
     let matches = App::new("Searcher")
         .about("Finds transactions on Etherscan for multiple given parameters

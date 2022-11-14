@@ -3,19 +3,21 @@ extern crate reqwest;
 use reqwest::blocking;
 use serde::{Deserialize, Serialize};
 use std::error::Error;
+
+// const THRESHOLD: String = "0".to_string();
 pub struct Query {
     pub address_from: String,
     pub token_address: String,
     pub start_block: String,
     pub end_block: String,
-    pub value_threshhold: u64,
+    pub value_threshhold: String,
 }
 #[derive(Debug)]
 pub struct Api {
     pub url: String,
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct Root {
     status: String,
     message: String,
@@ -54,6 +56,7 @@ impl Api {
             query.token_address, query.address_from, query.start_block, query.end_block
         )
         .to_string();
+        println!("Making api call:{:?}", url);
         let api_call = blocking::get(url)?.text().unwrap();
         let api_call_to_json = serde_json::from_str::<Root>(&api_call).unwrap();
         Ok(api_call_to_json)
@@ -62,18 +65,21 @@ impl Api {
 
 // Filtered by value threshhold
 impl Api {
-    pub fn get_filtered_txs(query: Query, responses: &Root) -> Result<Vec<Response>, &'static str> {
+    pub fn get_filtered_txs(
+        query: &Query,
+        responses: &Root,
+    ) -> Result<Vec<Response>, &'static str> {
         let mut filtered_query: Vec<Response> = vec![];
+        let conversion: u64 = 1000000;
+        let threshhold_value: u64 = conversion * query.value_threshhold.parse::<u64>().unwrap();
         let n_elements = responses.result.len();
         for i in 1..n_elements {
-            if &responses.result[i].value.parse::<u64>().unwrap() >= &query.value_threshhold {
+            if responses.result[i].value.parse::<u64>().unwrap() >= threshhold_value {
                 filtered_query.push(responses.result[i].clone());
-            } else {
-                return Err("whoops");
             }
         }
 
-        println!("{:#?}", filtered_query);
+        println!("filtered {:#?} @ {:#?}", filtered_query, threshhold_value);
         Ok(filtered_query)
     }
 }

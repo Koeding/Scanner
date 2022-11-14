@@ -8,7 +8,11 @@ const THRESHOLD: u64 = 0;
 
 fn main() {
     let matches = App::new("Searcher")
-        .about("Finds transactions on Etherscan for multiple given parameters")
+        .about("Finds transactions on Etherscan for multiple given parameters
+                In order to ultilise this app fully unnix commands are necessary
+                To save a given search use the > symbol after your search terms. 
+                i.e. <ADDRESS> <BLOCKNUMBER> <BLOCKNUMBER> <CONTRACT ADDRESS> [MINIMUM USD VALUE] > filenamehere.json
+                this will save your search in a file name output.json in the present working directory..")
         .version("1.3.3.7")
         .author("Ben Ruggles")
         .arg(
@@ -25,7 +29,7 @@ fn main() {
                 .value_name("BLOCKNUMBER")
                 .index(2)
                 .required(true)
-                .default_value("0")
+                // .default_value("0")
                 .takes_value(true),
         )
         .arg(
@@ -34,7 +38,7 @@ fn main() {
                 .value_name("BLOCKNUMBER")
                 .index(3)
                 .required(true)
-                .default_value("99999999")
+                // .default_value("99999999")
                 .takes_value(true),
         )
         .arg(
@@ -47,11 +51,11 @@ fn main() {
         )
         .arg(
             Arg::with_name("Value Threshhold")
-                .help("Specific ERC-20 Token address")
+                .help("Minimum value threshhold of transactions")
                 .index(5)
-                .required(false)
+                .required(true)
                 .value_name("MINIMUM USD VALUE")
-                .default_value("0")
+                // .default_value("0")
                 .takes_value(true),
         )
         .get_matches();
@@ -60,18 +64,14 @@ fn main() {
     let token_address = matches.value_of("Token").unwrap();
     let start_block = matches.value_of("Start Block").unwrap();
     let end_block = matches.value_of("End Block").unwrap();
-    let value_threshhold: u64 = matches
-        .value_of("End Block")
-        .unwrap()
-        .parse::<u64>()
-        .unwrap();
+    let value_threshhold = matches.value_of("Value Threshhold").unwrap();
 
     let query: Query = Query {
         address_from: address_from.to_string(),
         token_address: token_address.to_string(),
         start_block: start_block.to_string(),
         end_block: end_block.to_string(),
-        value_threshhold: value_threshhold,
+        value_threshhold: value_threshhold.to_string(),
     };
 
     println!(
@@ -84,11 +84,12 @@ fn main() {
         query.address_from, query.token_address, query.start_block, query.end_block
     );
     let responses = Api::get_txs(&query).unwrap();
-
+    println!("{:?}", responses);
     // Filtered call
-    if query.value_threshhold != THRESHOLD {
-        Api::get_filtered_txs(query, &responses).unwrap();
+    if query.value_threshhold.parse::<u64>().unwrap() != THRESHOLD {
+        let filtered = Api::get_filtered_txs(&query, &responses).unwrap();
+        println!("{:?}", filtered);
     } else {
-        println!("{:#?}", responses);
+        println!("{:?}", responses);
     }
 }

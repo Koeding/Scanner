@@ -29,6 +29,7 @@ fn main() {
                 .value_name("BLOCKNUMBER")
                 .index(2)
                 .required(true)
+                .empty_values(true)
                 // .default_value("0")
                 .takes_value(true),
         )
@@ -38,6 +39,7 @@ fn main() {
                 .value_name("BLOCKNUMBER")
                 .index(3)
                 .required(true)
+                .empty_values(true)
                 // .default_value("99999999")
                 .takes_value(true),
         )
@@ -46,6 +48,7 @@ fn main() {
                 .help("Specific ERC-20 Token address")
                 .index(4)
                 .required(true)
+                .empty_values(true)
                 .value_name("CONTRACT ADDRESS")
                 .takes_value(true),
         )
@@ -55,6 +58,7 @@ fn main() {
                 .index(5)
                 .required(true)
                 .value_name("MINIMUM USD VALUE")
+                .empty_values(true)
                 // .default_value("0")
                 .takes_value(true),
         )
@@ -83,13 +87,15 @@ fn main() {
         End Block: {}\n",
         query.address_from, query.token_address, query.start_block, query.end_block
     );
-    let responses = Api::get_txs(&query).unwrap();
-    println!("{:?}", responses);
-    // Filtered call
-    if query.value_threshhold.parse::<u64>().unwrap() != THRESHOLD {
-        let filtered = Api::get_filtered_txs(&query, &responses).unwrap();
-        println!("{:?}", filtered);
-    } else {
-        println!("{:?}", responses);
-    }
+    // let responses = Api::get_txs(&query).unwrap();
+    // println!("{:?}", responses);
+    // // Filtered call
+    // if query.value_threshhold.parse::<u64>().unwrap() != THRESHOLD {
+    //     let filtered = Api::get_filtered_txs(&query, &responses).unwrap();
+    //     println!("{:?}", filtered);
+    // } else {
+    //     println!("{:?}", responses);
+    // }
+    let response = Api::generate_api(query);
+    println!("{:?}", response);
 }

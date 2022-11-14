@@ -12,6 +12,7 @@ pub struct Query {
     pub end_block: String,
     pub value_threshhold: String,
 }
+
 #[derive(Debug)]
 pub struct Api {
     pub url: String,
@@ -81,5 +82,36 @@ impl Api {
 
         println!("filtered {:#?} @ {:#?}", filtered_query, threshhold_value);
         Ok(filtered_query)
+    }
+}
+//write function to determine search
+impl Api {
+    pub fn generate_api(query: Query) -> Result<String, Box<dyn Error>> {
+        let api = String::new();
+        if !query.address_from.is_empty()
+            && !query.start_block.is_empty()
+            && !query.end_block.is_empty()
+            && !query.token_address.is_empty()
+        {
+            // Search by account in Block Range
+            let api = format!(
+                    "https://api.etherscan.io/api?module=account&action=tokentx&contractaddress={}&address={}&page=1&offset=10000&startblock={}&endblock={}&sort=asc&apikey=8CSUXGCYX5P4JTIGP84VAW2H89APQYA3E8",
+                    query.token_address, query.address_from, query.start_block, query.end_block);
+        } else if !query.address_from.is_empty()
+            && !query.start_block.is_empty()
+            && !query.end_block.is_empty()
+            && query.token_address.is_empty()
+        {
+            // Search by account in Block Range
+            let api = format!(
+                "https://api.etherscan.io/apt?module=account&action=txlist&address={}&startblock={}&endblock={}&page=t&offset=1000t&sort=ast&apikey=YourApiKeyToken",
+                query.address_from, query.start_block, query.end_block);
+        } else if query.address_from.is_empty() {
+            if !query.start_block.is_empty() && !query.end_block.is_empty() {
+                // Search by Block Range
+                let api = format!("https://api.etherscan.io/api?module=account&action=txlistinternal&startblock={}&endblock={}&page=1&offset=10&sort=asc&apikey=YourApiKeyToken", query.start_block, query.end_block);
+            }
+        }
+        Ok(api)
     }
 }

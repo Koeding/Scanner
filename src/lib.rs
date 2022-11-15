@@ -2,6 +2,10 @@ extern crate reqwest;
 
 mod api_calls;
 
+use crate::api_calls::queries::{
+    is_search_acc_int, is_search_acc_int_flt, is_search_acc_rng, is_search_acc_rng_flt,
+    is_search_acc_tkn_rng, is_search_acc_tkn_rng_flt, is_search_rng, is_search_rng_flt,
+};
 use crate::api_calls::structs::{Api, Query};
 pub use crate::api_calls::{searching, structs};
 use crate::searching::{

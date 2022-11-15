@@ -6,7 +6,6 @@ use crate::api_calls::structs::{
     ResponseBlockRange, RootAddressInternal, RootAddressRange, RootAddressTokenRange,
     RootBlockRange,
 };
-
 use reqwest::blocking;
 
 // Search by Account & Token in Block Range with Value Threshhold

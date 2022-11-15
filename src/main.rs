@@ -2,7 +2,7 @@ extern crate clap;
 extern crate reqwest;
 
 use clap::{App, Arg};
-use etherscanner::{Api, Query};
+use etherscanner::structs::{Api, Query};
 
 fn main() {
     let matches = App::new("Searcher")

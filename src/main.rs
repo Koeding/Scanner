@@ -7,7 +7,7 @@ use etherscanner::structs::{Api, Query};
 fn main() {
     let matches = App::new("Searcher")
         .about("Finds transactions on Etherscan for multiple given parameters
-                In order to ultilise this app fully unnix commands are necessary
+                In order to ultilise this app fully unix commands are necessary
                 To save a given search use the > symbol after your search terms. 
                 i.e. <ADDRESS> <BLOCKNUMBER> <BLOCKNUMBER> <CONTRACT ADDRESS> [MINIMUM USD VALUE] > filenamehere.json
                 this will save your search in a file name output.json in the present working directory..")
@@ -52,10 +52,10 @@ fn main() {
         )
         .arg(
             Arg::with_name("Value Threshhold")
-                .help("Minimum value threshhold of transactions")
+                .help("Minimum value threshhold of transactions. Wei for Eth by default. USD for DAI token searches etc..")
                 .index(5)
                 .required(true)
-                .value_name("MINIMUM USD VALUE")
+                .value_name("VALUE THRESHHOLD")
                 .empty_values(true)
                 // .default_value("0")
                 .takes_value(true),

@@ -7,7 +7,7 @@ pub struct Query {
     pub value_threshhold: String,
 }
 
-#[derive(Debug)]
+#[derive(Debug, Serialize)]
 pub struct Api {
     pub url: String,
 }

@@ -31,7 +31,6 @@ pub fn search_acc_tkn_rng_flt(query: &Query) -> Vec<ResponseAddressTokenRange> {
             filtered_query.push(gen_api_call_to_json.result[i].clone());
         }
     }
-    println!("Results:{:#?}", filtered_query);
     return filtered_query;
 }
 
@@ -44,7 +43,6 @@ pub fn search_acc_tkn_rng(query: &Query) -> Result<RootAddressTokenRange, Box<dy
     let gen_api_call = blocking::get(api)?.text().unwrap();
     let gen_api_call_to_json =
         serde_json::from_str::<RootAddressTokenRange>(&gen_api_call).unwrap();
-    println!("Results:{:?}", gen_api_call_to_json);
     Ok(gen_api_call_to_json)
 }
 
@@ -70,7 +68,6 @@ pub fn search_acc_rng_flt(query: &Query) -> Result<Vec<ResponseAddressRange>, Bo
             filtered_query.push(gen_api_call_to_json.result[i].clone());
         }
     }
-    println!("Results:{:#?}", filtered_query);
     Ok(filtered_query)
 }
 
@@ -84,7 +81,6 @@ pub fn search_acc_rng(query: &Query) -> Result<RootAddressRange, Box<dyn Error>>
     println!("Results:{:#?}", gen_api_call);
 
     let gen_api_call_to_json = serde_json::from_str::<RootAddressRange>(&gen_api_call).unwrap();
-    println!("Results:{:#?}", gen_api_call_to_json);
     Ok(gen_api_call_to_json)
 }
 
@@ -108,7 +104,6 @@ pub fn search_rng_flt(query: &Query) -> Result<Vec<ResponseBlockRange>, Box<dyn 
             filtered_query.push(gen_api_call_to_json.result[i].clone());
         }
     }
-    println!("Results:{:#?}", filtered_query);
     Ok(filtered_query)
 }
 
@@ -119,7 +114,6 @@ pub fn search_rng(query: &Query) -> Result<RootBlockRange, Box<dyn Error>> {
     println!("Making api call:{:?}", api);
     let gen_api_call = blocking::get(api)?.text().unwrap();
     let gen_api_call_to_json = serde_json::from_str::<RootBlockRange>(&gen_api_call).unwrap();
-    println!("Results:{:#?}", gen_api_call_to_json);
     Ok(gen_api_call_to_json)
 }
 // Search by Account & Token in Block Range with Value Threshhold
@@ -143,7 +137,6 @@ pub fn search_acc_int_flt(query: &Query) -> Result<Vec<ResponseAddressInternal>,
             filtered_query.push(gen_api_call_to_json.result[i].clone());
         }
     }
-    println!("Results:{:#?}", filtered_query);
     Ok(filtered_query)
 }
 
@@ -155,6 +148,5 @@ pub fn search_acc_int(query: &Query) -> Result<RootAddressInternal, Box<dyn Erro
     println!("Making api call:{:?}", api);
     let gen_api_call = blocking::get(api)?.text().unwrap();
     let gen_api_call_to_json = serde_json::from_str::<RootAddressInternal>(&gen_api_call).unwrap();
-    println!("Results:{:?}", gen_api_call_to_json);
     Ok(gen_api_call_to_json)
 }

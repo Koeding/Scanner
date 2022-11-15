@@ -153,10 +153,15 @@ impl Api {
             let gen_api_call_to_json =
                 serde_json::from_str::<RootAddressTokenRange>(&gen_api_call).unwrap();
             let mut filtered_query: Vec<ResponseAddressTokenRange> = vec![];
-            let threshhold: u64 = 1000000 * query.value_threshhold.parse::<u64>().unwrap();
+            let threshhold: u128 = 1000000 * query.value_threshhold.parse::<u128>().unwrap();
             let n_elements = gen_api_call_to_json.result.len();
             for i in 1..n_elements {
-                if gen_api_call_to_json.result[i].value.parse::<u64>().unwrap() >= threshhold {
+                if gen_api_call_to_json.result[i]
+                    .value
+                    .parse::<u128>()
+                    .unwrap()
+                    >= threshhold
+                {
                     filtered_query.push(gen_api_call_to_json.result[i].clone());
                 }
             }
@@ -191,10 +196,15 @@ impl Api {
                     serde_json::from_str::<RootAddressRange>(&gen_api_call).unwrap();
                 println!("Results:{:#?}", gen_api_call_to_json);
                 let mut filtered_query: Vec<ResponseAddressRange> = vec![];
-                let threshhold: u64 = 1000000 * query.value_threshhold.parse::<u64>().unwrap();
+                let threshhold: u128 = 1000000 * query.value_threshhold.parse::<u128>().unwrap();
                 let n_elements = gen_api_call_to_json.result.len();
                 for i in 1..n_elements {
-                    if gen_api_call_to_json.result[i].value.parse::<u64>().unwrap() >= threshhold {
+                    if gen_api_call_to_json.result[i]
+                        .value
+                        .parse::<u128>()
+                        .unwrap()
+                        >= threshhold
+                    {
                         filtered_query.push(gen_api_call_to_json.result[i].clone());
                     }
                 }
@@ -221,10 +231,14 @@ impl Api {
                     let gen_api_call_to_json =
                         serde_json::from_str::<RootBlockRange>(&gen_api_call).unwrap();
                     let mut filtered_query: Vec<ResponseBlockRange> = vec![];
-                    let threshhold: u64 = 1000000 * query.value_threshhold.parse::<u64>().unwrap();
+                    let threshhold: u128 =
+                        1000000 * query.value_threshhold.parse::<u128>().unwrap();
                     let n_elements = gen_api_call_to_json.result.len();
                     for i in 1..n_elements {
-                        if gen_api_call_to_json.result[i].value.parse::<u64>().unwrap()
+                        if gen_api_call_to_json.result[i]
+                            .value
+                            .parse::<u128>()
+                            .unwrap()
                             >= threshhold
                         {
                             filtered_query.push(gen_api_call_to_json.result[i].clone());

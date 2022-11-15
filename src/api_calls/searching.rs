@@ -9,7 +9,7 @@ use crate::api_calls::structs::{
 use reqwest::blocking;
 
 // Search by Account & Token in Block Range with Value Threshhold
-pub fn search_acc_tkn_rng_flt(query: Query) -> Vec<ResponseAddressTokenRange> {
+pub fn search_acc_tkn_rng_flt(query: &Query) -> Vec<ResponseAddressTokenRange> {
     let api = format!(
             "https://api.etherscan.io/api?module=account&action=tokentx&contractaddress={}&address={}&page=1&offset=10000&startblock={}&endblock={}&sort=asc&apikey=8CSUXGCYX5P4JTIGP84VAW2H89APQYA3E8",
             query.token_address, query.address_from, query.start_block, query.end_block).to_string();
@@ -35,7 +35,7 @@ pub fn search_acc_tkn_rng_flt(query: Query) -> Vec<ResponseAddressTokenRange> {
 }
 
 // Search by Account & Token in Block Range (No value threshhold)
-pub fn search_acc_tkn_rng(query: Query) -> RootAddressTokenRange {
+pub fn search_acc_tkn_rng(query: &Query) -> RootAddressTokenRange {
     let api = format!(
             "https://api.etherscan.io/api?module=account&action=tokentx&contractaddress={}&address={}&page=1&offset=10000&startblock={}&endblock={}&sort=asc&apikey=8CSUXGCYX5P4JTIGP84VAW2H89APQYA3E8",
             query.token_address, query.address_from, query.start_block, query.end_block).to_string();
@@ -48,7 +48,7 @@ pub fn search_acc_tkn_rng(query: Query) -> RootAddressTokenRange {
 }
 
 // Search by Account in Block Range with Value Threshhold
-pub fn search_acc_rng_flt(query: Query) -> Vec<ResponseAddressRange> {
+pub fn search_acc_rng_flt(query: &Query) -> Vec<ResponseAddressRange> {
     let api = format!(
             "https://api.etherscan.io/apt?module=account&action=txlist&address={}&startblock={}&endblock={}&page=t&offset=10000t&sort=ast&apikey=8CSUXGCYX5P4JTIGP84VAW2H89APQYA3E8",
             query.address_from, query.start_block, query.end_block).to_string();
@@ -74,7 +74,7 @@ pub fn search_acc_rng_flt(query: Query) -> Vec<ResponseAddressRange> {
 }
 
 // Search by Account in Block Range (No value threshhold)
-pub fn search_acc_rng(query: Query) -> RootAddressRange {
+pub fn search_acc_rng(query: &Query) -> RootAddressRange {
     let api = format!(
             "https://api.etherscan.io/apt?module=account&action=txlist&address={}&startblock={}&endblock={}&page=t&offset=10000t&sort=ast&apikey=8CSUXGCYX5P4JTIGP84VAW2H89APQYA3E8",
             query.address_from, query.start_block, query.end_block).to_string();
@@ -86,7 +86,7 @@ pub fn search_acc_rng(query: Query) -> RootAddressRange {
 }
 
 // Search Block Range with Value Threshhold
-pub fn search_rng_flt(query: Query) -> Vec<ResponseBlockRange> {
+pub fn search_rng_flt(query: &Query) -> Vec<ResponseBlockRange> {
     let api = format!("https://api.etherscan.io/api?module=account&action=txlistinternal&startblock={}&endblock={}&page=1&offset=10000&sort=asc&apikey=8CSUXGCYX5P4JTIGP84VAW2H89APQYA3E8", 
         query.start_block, query.end_block).to_string();
     println!("Making api call:{:?}", api);
@@ -109,7 +109,7 @@ pub fn search_rng_flt(query: Query) -> Vec<ResponseBlockRange> {
     return filtered_query;
 }
 
-pub fn search_rng(query: Query) -> RootBlockRange {
+pub fn search_rng(query: &Query) -> RootBlockRange {
     // Search by Block Range (no value threshhold)
     let api = format!("https://api.etherscan.io/api?module=account&action=txlistinternal&startblock={}&endblock={}&page=1&offset=10000&sort=asc&apikey=8CSUXGCYX5P4JTIGP84VAW2H89APQYA3E8", 
             query.start_block, query.end_block).to_string();
@@ -120,7 +120,7 @@ pub fn search_rng(query: Query) -> RootBlockRange {
     return gen_api_call_to_json;
 }
 // Search by Account & Token in Block Range with Value Threshhold
-pub fn search_acc_int_flt(query: Query) -> Vec<ResponseAddressInternal> {
+pub fn search_acc_int_flt(query: &Query) -> Vec<ResponseAddressInternal> {
     let api = format!(
             "https://api.etherscan.io/api?module=account&action=tokentx&contractaddress={}&address={}&page=1&offset=10000&startblock={}&endblock={}&sort=asc&apikey=8CSUXGCYX5P4JTIGP84VAW2H89APQYA3E8",
             query.token_address, query.address_from, query.start_block, query.end_block).to_string();
@@ -145,7 +145,7 @@ pub fn search_acc_int_flt(query: Query) -> Vec<ResponseAddressInternal> {
 }
 
 // Search by Account & Token in Block Range (No value threshhold)
-pub fn search_acc_int(query: Query) -> RootAddressInternal {
+pub fn search_acc_int(query: &Query) -> RootAddressInternal {
     let api = format!(
             "https://api.etherscan.io/api?module=account&action=tokentx&contractaddress={}&address={}&page=1&offset=10000&startblock={}&endblock={}&sort=asc&apikey=8CSUXGCYX5P4JTIGP84VAW2H89APQYA3E8",
             query.token_address, query.address_from, query.start_block, query.end_block).to_string();

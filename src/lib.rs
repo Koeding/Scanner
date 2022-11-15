@@ -15,67 +15,40 @@ use crate::searching::{
 
 use std::error::Error;
 
-//TODO: use u128 to stop overflow of large value searches
-//write function to determine search
 impl Api {
     pub fn generate_api(query: Query) -> Result<(), Box<dyn Error>> {
-        if !query.address_from.is_empty()
-            && !query.start_block.is_empty()
-            && !query.end_block.is_empty()
-            && !query.token_address.is_empty()
-            && !query.value_threshhold.is_empty()
-        {
+        if is_search_acc_tkn_rng_flt(&query) {
             // Search by Account & Token in Block Range with Value Threshhold
-            let filtered_payload = search_acc_tkn_rng_flt(query);
+            let filtered_payload = search_acc_tkn_rng_flt(&query);
             println!("Results:{:#?}", filtered_payload);
-        } else if !query.address_from.is_empty()
-            && !query.start_block.is_empty()
-            && !query.end_block.is_empty()
-            && !query.token_address.is_empty()
-        {
+        } else if is_search_acc_tkn_rng(&query) {
             // Search by Account & Token in Block Range (No value threshhold)
-            let payload = search_acc_tkn_rng(query);
+            let payload = search_acc_tkn_rng(&query);
             println!("Results:{:?}", payload);
-        } else if !query.address_from.is_empty()
-            && !query.start_block.is_empty()
-            && !query.end_block.is_empty()
-            && query.token_address.is_empty()
-        {
-            if !query.value_threshhold.is_empty() {
-                // Search by Account in Block Range with Value Threshhold
-                let filtered_payload = search_acc_rng_flt(query);
-                println!("Results:{:#?}", filtered_payload);
-            } else {
-                // Search by Account in Block Range (No value threshhold)
-                let payload = search_acc_rng(query);
-                println!("Results:{:?}", payload);
-            }
-        } else if !query.address_from.is_empty()
-            && query.start_block.is_empty()
-            && query.end_block.is_empty()
-            && query.token_address.is_empty()
-        {
-            if !query.value_threshhold.is_empty() {
-                // Search by Account in Block Range with Value Threshhold
-                let filtered_payload = search_acc_int_flt(query);
-                println!("Results:{:#?}", filtered_payload);
-            } else {
-                // Search by Account in Block Range (No value threshhold)
-                let payload = search_acc_int(query);
-                println!("Results:{:?}", payload);
-            }
-        } else if query.address_from.is_empty() {
-            if !query.start_block.is_empty() && !query.end_block.is_empty() {
-                if !query.value_threshhold.is_empty() {
-                    // Search Block Range with Value Threshhold
-                    let filtered_payload = search_rng_flt(query);
-                    println!("Results:{:#?}", filtered_payload);
-                } else {
-                    // Search by Block Range (no value threshhold)
-                    let payload = search_rng(query);
-                    println!("Results:{:#?}", payload);
-                }
-            }
+        } else if is_search_acc_rng_flt(&query) {
+            // Search by Account in Block Range with Value Threshhold
+            let filtered_payload = search_acc_rng_flt(&query);
+            println!("Results:{:#?}", filtered_payload);
+        } else if is_search_acc_rng(&query) {
+            // Search by Account in Block Range (No value threshhold)
+            let payload = search_acc_rng(&query);
+            println!("Results:{:?}", payload);
+        } else if is_search_acc_int_flt(&query) {
+            // Search by Account in Block Range with Value Threshhold
+            let filtered_payload = search_acc_int_flt(&query);
+            println!("Results:{:#?}", filtered_payload);
+        } else if is_search_acc_int(&query) {
+            // Search by Account in Block Range (No value threshhold)
+            let payload = search_acc_int(&query);
+            println!("Results:{:?}", payload);
+        } else if is_search_rng_flt(&query) {
+            // Search Block Range with Value Threshhold
+            let filtered_payload = search_rng_flt(&query);
+            println!("Results:{:#?}", filtered_payload);
+        } else if is_search_rng(&query) {
+            // Search by Block Range (no value threshhold)
+            let payload = search_rng(&query);
+            println!("Results:{:#?}", payload);
         }
 
         Ok(())

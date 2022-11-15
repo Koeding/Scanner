@@ -77,23 +77,24 @@ fn main() {
     };
 
     println!(
-        "   
-    Scanning for the following parameters:\n
-        Sender: {}
-        Token Address: {}
-        Start Block: {}
-        End Block: {}\n",
+        " 
+        ███████╗ ██████╗ █████╗ ███╗   ██╗███╗   ██╗███████╗██████╗ 
+        ██╔════╝██╔════╝██╔══██╗████╗  ██║████╗  ██║██╔════╝██╔══██╗
+        ███████╗██║     ███████║██╔██╗ ██║██╔██╗ ██║█████╗  ██████╔╝
+        ╚════██║██║     ██╔══██║██║╚██╗██║██║╚██╗██║██╔══╝  ██╔══██╗
+        ███████║╚██████╗██║  ██║██║ ╚████║██║ ╚████║███████╗██║  ██║
+        ╚══════╝ ╚═════╝╚═╝  ╚═╝╚═╝  ╚═══╝╚═╝  ╚═══╝╚══════╝╚═╝  ╚═╝
+                                                                    
+          
+
+            Scanning for the following parameters:\n
+                Sender: {}
+                Token Address: {}
+                Start Block: {}
+                End Block: {}\n",
         query.address_from, query.token_address, query.start_block, query.end_block
     );
-    // let responses = Api::get_txs(&query).unwrap();
-    // println!("{:?}", responses);
-    // // Filtered call
-    // if query.value_threshhold.parse::<u64>().unwrap() != THRESHOLD {
-    //     let filtered = Api::get_filtered_txs(&query, &responses).unwrap();
-    //     println!("{:?}", filtered);
-    // } else {
-    //     println!("{:?}", responses);
-    // }
+
     let response = Api::generate_api(query);
     println!("{:?}", response);
 }
